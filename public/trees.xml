@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ArrayOfThemeEntityAbridgedData xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.datacontract.org/2004/07/WSU.Locations.DTO">
+<ThemeEntityAbridgedData>
+<DefaultImagePath>https://w3.winona.edu/Locations/Resources/AustrianPine.png</DefaultImagePath>
+<DisplayName>Austrian Pine</DisplayName>
+<EntityId>3</EntityId>
+<GeoLocation>[{"Lat":"44.047318","Lng":"-91.644497"}]</GeoLocation>
+</ThemeEntityAbridgedData>
+</ArrayOfThemeEntityAbridgedData> 
