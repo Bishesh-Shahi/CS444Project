@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import { fileURLToPath } from "url";
@@ -18,12 +17,3 @@ export default defineConfig({
     include: ["clsx", "tailwind-merge"],
   },
 });
-=======
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
-
-// https://vite.dev/config/
-export default defineConfig({
-  plugins: [react()],
-})
->>>>>>> 4ad53782d32301002638b06efc23e708124999a6
