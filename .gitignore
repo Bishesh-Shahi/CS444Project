@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Dependencies
 /node_modules
 /.pnp
@@ -15,19 +14,8 @@
 # Production
 /build
 /dist
+dist-ssr
 
-# Misc
-.DS_Store
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-
-# Debug logs
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-=======
 # Logs
 logs
 *.log
@@ -37,26 +25,20 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
+# Misc
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
 *.local
->>>>>>> 4ad53782d32301002638b06efc23e708124999a6
 
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
 .idea
-<<<<<<< HEAD
-=======
-.DS_Store
->>>>>>> 4ad53782d32301002638b06efc23e708124999a6
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
-<<<<<<< HEAD
-*.sw? 
-=======
 *.sw?
->>>>>>> 4ad53782d32301002638b06efc23e708124999a6
