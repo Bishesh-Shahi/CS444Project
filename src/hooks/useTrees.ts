@@ -2,7 +2,7 @@
  * Hook for fetching and managing tree data
  */
 import { useState, useEffect } from "react";
-import { Tree } from "../types/tree";
+import { Tree, TreeLocation } from "../types/tree";
 
 /**
  * Hook that fetches all trees from the API
@@ -45,14 +45,49 @@ export const useTrees = () => {
           const DisplayName =
             tree.querySelector("DisplayName")?.textContent || "";
           const EntityId = tree.querySelector("EntityId")?.textContent || "";
-          const GeoLocation =
-            tree.querySelector("GeoLocation")?.textContent || "[]";
+          const GeoLocationString =
+            tree.querySelector("GeoLocation")?.textContent || "";
+
+          // Parse the GeoLocation string to an array of TreeLocation objects
+          let geoLocation: TreeLocation[] = [];
+
+          try {
+            if (GeoLocationString && GeoLocationString !== "[]") {
+              // The GeoLocation is stored as a JSON string
+              const parsedLocation = JSON.parse(GeoLocationString);
+
+              // Check if it's an array or a single object
+              if (Array.isArray(parsedLocation)) {
+                geoLocation = parsedLocation;
+              } else {
+                // If it's a single object, convert to array
+                geoLocation = [parsedLocation];
+              }
+
+              // Validate that each item has Lat and Lng properties
+              geoLocation = geoLocation.filter(
+                (loc): loc is TreeLocation =>
+                  typeof loc === "object" &&
+                  loc !== null &&
+                  "Lat" in loc &&
+                  "Lng" in loc
+              );
+            }
+          } catch (parseError) {
+            console.error(
+              "Error parsing GeoLocation:",
+              parseError,
+              GeoLocationString
+            );
+            // In case of parsing error, leave as empty array
+            geoLocation = [];
+          }
 
           return {
             DefaultImagePath,
             DisplayName,
             EntityId,
-            GeoLocation,
+            geoLocation,
           };
         });
 

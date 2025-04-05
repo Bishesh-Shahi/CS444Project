@@ -20,7 +20,21 @@ export interface Tree {
   DisplayName: string;
   /** Unique identifier for the tree */
   EntityId: string;
-  /** JSON string containing location data - must be parsed */
+  /** Parsed location data as an array of points */
+  geoLocation: TreeLocation[];
+}
+
+/**
+ * Raw tree data from the API with unparsed GeoLocation
+ */
+export interface RawTree {
+  /** Path to the default image of the tree */
+  DefaultImagePath: string;
+  /** Display name of the tree */
+  DisplayName: string;
+  /** Unique identifier for the tree */
+  EntityId: string;
+  /** Location data as a JSON string - needs to be parsed */
   GeoLocation: string;
 }
 
@@ -38,16 +52,8 @@ export interface TreeDetails extends Tree {
   };
 }
 
-/**
- * Tree data with parsed GeoLocation
- */
-export interface TreeData extends Omit<Tree, "GeoLocation"> {
-  /** Parsed location data as an array of points */
-  GeoLocation: TreeLocation[];
-}
-
 export interface TreesResponse {
   ArrayOfThemeEntityAbridgedData: {
-    ThemeEntityAbridgedData: Tree[];
+    ThemeEntityAbridgedData: RawTree[];
   };
 }
