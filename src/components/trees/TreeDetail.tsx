@@ -2,10 +2,11 @@ import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { useTrees } from "../../hooks/useTrees";
 import { Spinner } from "../ui/Spinner";
+import THEME from "../../utils/theme-config";
 
 type TabType = "about" | "images" | "location";
 
-const GOOGLE_MAPS_API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
+const GOOGLE_MAPS_API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY || "";
 
 const sampleTreeData = {
   "Ruby Red Horsechestnut": {

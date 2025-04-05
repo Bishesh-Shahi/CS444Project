@@ -2,9 +2,7 @@ import { useTrees } from "../hooks/useTrees";
 import { Spinner } from "../components/ui/Spinner";
 import THEME from "../utils/theme-config";
 
-const GOOGLE_MAPS_API_KEY =
-  import.meta.env.VITE_GOOGLE_MAPS_API_KEY ||
-  "REMOVED_API_KEY";
+const GOOGLE_MAPS_API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY || "";
 
 export const LocationPage = () => {
   const { trees, loading, error } = useTrees();
