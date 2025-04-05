@@ -88,14 +88,21 @@ export const AboutPage = () => {
               </div>
               <div className="p-6">
                 <div className="flex justify-between items-start mb-4">
-                  <h2 className="text-2xl font-bold text-green-800">
+                  <h2
+                    className="text-2xl font-bold"
+                    style={{ color: "#3B1083" }}
+                  >
                     {tree.DisplayName}
                   </h2>
                   <button
                     onClick={() => toggleTreeInfo(tree.EntityId)}
-                    className="px-4 py-2 text-sm font-medium text-green-600 hover:text-green-700 
-                             border border-green-600 hover:border-green-700 rounded-full 
-                             transition-colors duration-200"
+                    className={`px-4 py-2 text-sm font-medium border rounded-full 
+                             transition-colors duration-200 
+                             ${
+                               isExpanded
+                                 ? "bg-[#3B1083] text-white border-[#3B1083]"
+                                 : "text-[#3B1083] border-[#3B1083] hover:bg-[#3B1083] hover:text-white"
+                             }`}
                   >
                     {isExpanded ? "Show Less" : "Show More"}
                   </button>
@@ -105,24 +112,24 @@ export const AboutPage = () => {
                 <div className="grid grid-cols-2 gap-4 mb-6">
                   <div className="space-y-2">
                     <div className="flex items-center gap-2">
-                      <span className="text-green-600">🌲</span>
+                      <span className="text-[#3B1083]">🌲</span>
                       <span className="font-medium">Height:</span>
                       <span>{treeData.essentialInfo.height}</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <span className="text-green-600">↔️</span>
+                      <span className="text-[#3B1083]">↔️</span>
                       <span className="font-medium">Spread:</span>
                       <span>{treeData.essentialInfo.spread}</span>
                     </div>
                   </div>
                   <div className="space-y-2">
                     <div className="flex items-center gap-2">
-                      <span className="text-green-600">📈</span>
+                      <span className="text-[#3B1083]">📈</span>
                       <span className="font-medium">Growth Rate:</span>
                       <span>{treeData.essentialInfo.growthRate}</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <span className="text-green-600">⏳</span>
+                      <span className="text-[#3B1083]">⏳</span>
                       <span className="font-medium">Lifespan:</span>
                       <span>{treeData.essentialInfo.lifespan}</span>
                     </div>
@@ -133,7 +140,7 @@ export const AboutPage = () => {
                 {isExpanded && (
                   <div className="mt-6 border-t pt-6 space-y-6">
                     <div>
-                      <h3 className="text-lg font-semibold text-green-700 mb-2">
+                      <h3 className="text-lg font-semibold text-[#3B1083] mb-2">
                         Scientific Details
                       </h3>
                       <div className="grid grid-cols-2 gap-4">
@@ -155,7 +162,7 @@ export const AboutPage = () => {
                     </div>
 
                     <div>
-                      <h3 className="text-lg font-semibold text-green-700 mb-2">
+                      <h3 className="text-lg font-semibold text-[#3B1083] mb-2">
                         Description
                       </h3>
                       <p className="text-gray-700 leading-relaxed">
@@ -164,7 +171,7 @@ export const AboutPage = () => {
                     </div>
 
                     <div>
-                      <h3 className="text-lg font-semibold text-green-700 mb-2">
+                      <h3 className="text-lg font-semibold text-[#3B1083] mb-2">
                         Characteristics
                       </h3>
                       <div className="grid grid-cols-2 gap-4">
@@ -182,7 +189,7 @@ export const AboutPage = () => {
                     </div>
 
                     <div>
-                      <h3 className="text-lg font-semibold text-green-700 mb-2">
+                      <h3 className="text-lg font-semibold text-[#3B1083] mb-2">
                         Growing Requirements
                       </h3>
                       <div className="grid grid-cols-2 gap-4">
@@ -200,7 +207,7 @@ export const AboutPage = () => {
                     </div>
 
                     <div>
-                      <h3 className="text-lg font-semibold text-green-700 mb-2">
+                      <h3 className="text-lg font-semibold text-[#3B1083] mb-2">
                         Common Uses
                       </h3>
                       <ul className="list-disc list-inside space-y-1">
@@ -213,7 +220,7 @@ export const AboutPage = () => {
                     </div>
 
                     <div>
-                      <h3 className="text-lg font-semibold text-green-700 mb-2">
+                      <h3 className="text-lg font-semibold text-[#3B1083] mb-2">
                         Maintenance Tips
                       </h3>
                       <ul className="list-disc list-inside space-y-1">
