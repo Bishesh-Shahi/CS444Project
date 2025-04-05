@@ -1,0 +1,49 @@
+/* Layout Container */
+.layout {
+  min-height: 100vh;
+  background-color: hsl(var(--background));
+}
+
+.layout__container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+/* Card Layout */
+.card {
+  background-color: hsl(var(--card));
+  border-radius: var(--radius);
+  padding: 2rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.card--interactive {
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card--interactive:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Grid Layout */
+.grid {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.grid--2-cols {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.grid--3-cols {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+@media (max-width: 768px) {
+  .grid--2-cols,
+  .grid--3-cols {
+    grid-template-columns: 1fr;
+  }
+}
