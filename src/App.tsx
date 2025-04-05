@@ -8,6 +8,7 @@ import {
 import { Navigation } from "./components/ui/Navigation";
 import { AboutPage } from "./pages/AboutPage";
 import { LocationPage } from "./pages/LocationPage";
+import { ImagesPage } from "./pages/ImagesPage";
 import { RootLayout } from "./layouts/RootLayout";
 import { PlantDetail } from "./components/plants/PlantDetail";
 import { Spinner } from "./components/ui/Spinner";
@@ -86,6 +87,7 @@ function App() {
           <Routes>
             <Route path="/" element={<AboutPage />} />
             <Route path="/location" element={<LocationPage />} />
+            <Route path="/images" element={<ImagesPage />} />
           </Routes>
         </main>
       </div>
