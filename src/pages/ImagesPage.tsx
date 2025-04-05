@@ -54,6 +54,7 @@ export const ImagesPage = () => {
   const { trees, loading: treesLoading, error: treesError } = useTrees();
   const [selectedTree, setSelectedTree] = useState<Tree | null>(null);
   const [selectedSeason, setSelectedSeason] = useState<Season>("All");
+
   const {
     images,
     loading: imagesLoading,
@@ -102,7 +103,11 @@ export const ImagesPage = () => {
                 transform hover:scale-105 active:scale-95
                 ${
                   selectedSeason === name
-                    ? "bg-green-600 text-white shadow-lg"
+                    ? `${
+                        name === "All"
+                          ? "bg-gray-600"
+                          : `season-tag--${name.toLowerCase()}`
+                      } text-white shadow-lg`
                     : "bg-white hover:bg-gray-50 text-gray-800 border border-gray-200"
                 }
               `}
@@ -144,11 +149,11 @@ export const ImagesPage = () => {
                   <span
                     key={season}
                     className={`
-                      inline-block px-3 py-1 rounded-full text-xs
+                      inline-block px-3 py-1 rounded-full text-xs text-white
                       ${
                         selectedSeason === "All" || selectedSeason === season
-                          ? "bg-green-500 text-white"
-                          : "bg-gray-700 text-gray-300"
+                          ? `season-tag--${season.toLowerCase()}`
+                          : "bg-gray-700"
                       }
                     `}
                   >
@@ -195,12 +200,12 @@ export const ImagesPage = () => {
                       <span
                         key={season}
                         className={`
-                          px-3 py-1 rounded-full text-sm
+                          px-3 py-1 rounded-full text-sm text-white
                           ${
                             selectedSeason === "All" ||
                             selectedSeason === season
-                              ? "bg-green-100 text-green-800"
-                              : "bg-gray-100 text-gray-600"
+                              ? `season-tag--${season.toLowerCase()}`
+                              : "bg-gray-700"
                           }
                         `}
                       >
@@ -208,20 +213,13 @@ export const ImagesPage = () => {
                       </span>
                     ))}
                   </div>
-                  {selectedTree.GeoLocation && (
-                    <p className="modal__location">
-                      {(() => {
-                        try {
-                          const geoLocation = JSON.parse(
-                            selectedTree.GeoLocation
-                          );
-                          return `Location: ${geoLocation[0]?.Lat}°N, ${geoLocation[0]?.Lng}°W`;
-                        } catch {
-                          return null;
-                        }
-                      })()}
-                    </p>
-                  )}
+                  {selectedTree.geoLocation &&
+                    selectedTree.geoLocation.length > 0 && (
+                      <p className="text-gray-600 text-sm mb-4">
+                        📍 Location: {selectedTree.geoLocation[0].Lat}°N,{" "}
+                        {selectedTree.geoLocation[0].Lng}°W
+                      </p>
+                    )}
                 </div>
 
                 {/* Additional Images */}

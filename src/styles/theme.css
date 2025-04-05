@@ -29,6 +29,24 @@
     --chart-3: 197 37% 24%;
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
+
+    /* Tree App Theme Colors */
+    --tree-primary: #3b1083;
+    --tree-primary-hover: #2d0c66;
+    --tree-text-body: #374151; /* gray-700 */
+    --tree-text-muted: #6b7280; /* gray-600 */
+    --tree-bg-card: #ffffff;
+    --tree-border-color: #e5e7eb; /* gray-200 */
+    --tree-success: #10b981; /* green-500 */
+    --tree-success-light: #d1fae5; /* green-100 */
+    --tree-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+      0 2px 4px -1px rgba(0, 0, 0, 0.06);
+
+    /* Seasonal Colors */
+    --season-spring: #10b981; /* green-500 */
+    --season-summer: #f59e0b; /* amber-500 */
+    --season-fall: #ef4444; /* red-500 */
+    --season-winter: #3b82f6; /* blue-500 */
   }
 
   .dark {
@@ -56,10 +74,26 @@
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
+
+    /* Tree App Theme Colors - Dark Mode */
+    --tree-primary: #9061ff;
+    --tree-primary-hover: #7b4dff;
+    --tree-text-body: #e5e7eb; /* gray-200 */
+    --tree-text-muted: #9ca3af; /* gray-400 */
+    --tree-bg-card: #1f2937; /* gray-800 */
+    --tree-border-color: #374151; /* gray-700 */
+    --tree-success: #10b981; /* green-500 */
+    --tree-success-light: #065f46; /* green-800 */
+    --tree-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3),
+      0 2px 4px -1px rgba(0, 0, 0, 0.2);
+
+    /* Seasonal Colors - Dark Mode */
+    --season-spring: #059669; /* green-600 */
+    --season-summer: #d97706; /* amber-600 */
+    --season-fall: #dc2626; /* red-600 */
+    --season-winter: #2563eb; /* blue-600 */
   }
 }
-
-
 
 @layer base {
   * {
