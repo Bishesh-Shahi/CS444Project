@@ -2,6 +2,36 @@ import { useState } from "react";
 import { useTrees } from "../hooks/useTrees";
 import { Spinner } from "../components/ui/Spinner";
 
+// Constants for consistent styling
+const THEME = {
+  colors: {
+    primary: "#3B1083",
+    text: {
+      body: "text-gray-700",
+      muted: "text-gray-600",
+    },
+    background: {
+      card: "bg-white",
+      button: {
+        active: "bg-[#3B1083]",
+        hover: "hover:bg-[#3B1083]",
+      },
+    },
+    border: {
+      primary: "border-[#3B1083]",
+    },
+  },
+  spacing: {
+    container: "max-w-4xl mx-auto px-4 sm:px-6 lg:px-8",
+    section: "space-y-6",
+  },
+  typography: {
+    title: "text-xl sm:text-2xl md:text-3xl font-bold",
+    subtitle: "text-lg sm:text-xl font-semibold",
+    body: "text-base",
+  },
+};
+
 const sampleTreeData = {
   "Austrian Pine": {
     essentialInfo: {
@@ -61,18 +91,19 @@ export const AboutPage = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8">
-      <div className="grid gap-8">
+    <div className={`py-4 sm:py-6 md:py-8 ${THEME.spacing.container}`}>
+      <div className="grid gap-4 sm:gap-6 md:gap-8">
         {trees.map((tree) => {
           const isExpanded = expandedTrees.has(tree.EntityId);
-          const treeData = sampleTreeData["Austrian Pine"]; // Using sample data for all trees for now
+          const treeData = sampleTreeData["Austrian Pine"];
 
           return (
             <div
               key={tree.EntityId}
-              className="bg-white rounded-lg shadow-md overflow-hidden"
+              className={`${THEME.colors.background.card} rounded-lg shadow-md overflow-hidden`}
             >
-              <div className="aspect-w-16 aspect-h-9">
+              {/* Tree Image Section */}
+              <div className="relative aspect-w-16 aspect-h-12 sm:aspect-h-9">
                 <img
                   src={
                     tree.DefaultImagePath ||
@@ -86,151 +117,145 @@ export const AboutPage = () => {
                   }}
                 />
               </div>
-              <div className="p-6">
-                <div className="flex justify-between items-start mb-4">
+
+              {/* Content Section */}
+              <div className="p-4 sm:p-6">
+                {/* Header */}
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
                   <h2
-                    className="text-2xl font-bold"
-                    style={{ color: "#3B1083" }}
+                    className={`${THEME.typography.title}`}
+                    style={{ color: THEME.colors.primary }}
                   >
                     {tree.DisplayName}
                   </h2>
                   <button
                     onClick={() => toggleTreeInfo(tree.EntityId)}
-                    className={`px-4 py-2 text-sm font-medium border rounded-full 
-                             transition-colors duration-200 
-                             ${
-                               isExpanded
-                                 ? "bg-[#3B1083] text-white border-[#3B1083]"
-                                 : "text-[#3B1083] border-[#3B1083] hover:bg-[#3B1083] hover:text-white"
-                             }`}
+                    className={`
+                      px-4 py-2 text-sm font-medium border rounded-full
+                      transition-all duration-200 w-full sm:w-auto
+                      ${
+                        isExpanded
+                          ? `${THEME.colors.background.button.active} text-white ${THEME.colors.border.primary}`
+                          : `text-[${THEME.colors.primary}] ${THEME.colors.border.primary} ${THEME.colors.background.button.hover} hover:text-white`
+                      }
+                    `}
                   >
                     {isExpanded ? "Show Less" : "Show More"}
                   </button>
                 </div>
 
                 {/* Essential Information */}
-                <div className="grid grid-cols-2 gap-4 mb-6">
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-2">
-                      <span className="text-[#3B1083]">🌲</span>
-                      <span className="font-medium">Height:</span>
-                      <span>{treeData.essentialInfo.height}</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <span className="text-[#3B1083]">↔️</span>
-                      <span className="font-medium">Spread:</span>
-                      <span>{treeData.essentialInfo.spread}</span>
-                    </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+                  <div className="space-y-3">
+                    <InfoItem
+                      icon="🌲"
+                      label="Height"
+                      value={treeData.essentialInfo.height}
+                    />
+                    <InfoItem
+                      icon="↔️"
+                      label="Spread"
+                      value={treeData.essentialInfo.spread}
+                    />
                   </div>
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-2">
-                      <span className="text-[#3B1083]">📈</span>
-                      <span className="font-medium">Growth Rate:</span>
-                      <span>{treeData.essentialInfo.growthRate}</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <span className="text-[#3B1083]">⏳</span>
-                      <span className="font-medium">Lifespan:</span>
-                      <span>{treeData.essentialInfo.lifespan}</span>
-                    </div>
+                  <div className="space-y-3">
+                    <InfoItem
+                      icon="📈"
+                      label="Growth Rate"
+                      value={treeData.essentialInfo.growthRate}
+                    />
+                    <InfoItem
+                      icon="⏳"
+                      label="Lifespan"
+                      value={treeData.essentialInfo.lifespan}
+                    />
                   </div>
                 </div>
 
                 {/* Detailed Information (Expandable) */}
                 {isExpanded && (
-                  <div className="mt-6 border-t pt-6 space-y-6">
-                    <div>
-                      <h3 className="text-lg font-semibold text-[#3B1083] mb-2">
-                        Scientific Details
-                      </h3>
-                      <div className="grid grid-cols-2 gap-4">
-                        <div>
-                          <p className="text-sm text-gray-600">
-                            Scientific Name
-                          </p>
-                          <p className="font-medium">
-                            {treeData.detailedInfo.scientificName}
-                          </p>
-                        </div>
-                        <div>
-                          <p className="text-sm text-gray-600">Family</p>
-                          <p className="font-medium">
-                            {treeData.detailedInfo.family}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
+                  <div
+                    className={`mt-6 border-t pt-6 ${THEME.spacing.section}`}
+                  >
+                    {/* Scientific Details */}
+                    <DetailSection
+                      title="Scientific Details"
+                      className="grid grid-cols-1 sm:grid-cols-2 gap-4"
+                    >
+                      <DetailItem
+                        label="Scientific Name"
+                        value={treeData.detailedInfo.scientificName}
+                      />
+                      <DetailItem
+                        label="Family"
+                        value={treeData.detailedInfo.family}
+                      />
+                    </DetailSection>
 
-                    <div>
-                      <h3 className="text-lg font-semibold text-[#3B1083] mb-2">
-                        Description
-                      </h3>
-                      <p className="text-gray-700 leading-relaxed">
+                    {/* Description */}
+                    <DetailSection title="Description">
+                      <p
+                        className={`${THEME.colors.text.body} leading-relaxed`}
+                      >
                         {treeData.detailedInfo.description}
                       </p>
-                    </div>
+                    </DetailSection>
 
-                    <div>
-                      <h3 className="text-lg font-semibold text-[#3B1083] mb-2">
-                        Characteristics
-                      </h3>
-                      <div className="grid grid-cols-2 gap-4">
-                        {Object.entries(
-                          treeData.detailedInfo.characteristics
-                        ).map(([key, value]) => (
-                          <div key={key}>
-                            <p className="text-sm text-gray-600 capitalize">
-                              {key}
-                            </p>
-                            <p className="font-medium">{value}</p>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
+                    {/* Characteristics */}
+                    <DetailSection
+                      title="Characteristics"
+                      className="grid grid-cols-1 sm:grid-cols-2 gap-4"
+                    >
+                      {Object.entries(
+                        treeData.detailedInfo.characteristics
+                      ).map(([key, value]) => (
+                        <DetailItem
+                          key={key}
+                          label={key}
+                          value={value}
+                          capitalize
+                        />
+                      ))}
+                    </DetailSection>
 
-                    <div>
-                      <h3 className="text-lg font-semibold text-[#3B1083] mb-2">
-                        Growing Requirements
-                      </h3>
-                      <div className="grid grid-cols-2 gap-4">
-                        {Object.entries(
-                          treeData.detailedInfo.growthRequirements
-                        ).map(([key, value]) => (
-                          <div key={key}>
-                            <p className="text-sm text-gray-600 capitalize">
-                              {key}
-                            </p>
-                            <p className="font-medium">{value}</p>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
+                    {/* Growing Requirements */}
+                    <DetailSection
+                      title="Growing Requirements"
+                      className="grid grid-cols-1 sm:grid-cols-2 gap-4"
+                    >
+                      {Object.entries(
+                        treeData.detailedInfo.growthRequirements
+                      ).map(([key, value]) => (
+                        <DetailItem
+                          key={key}
+                          label={key}
+                          value={value}
+                          capitalize
+                        />
+                      ))}
+                    </DetailSection>
 
-                    <div>
-                      <h3 className="text-lg font-semibold text-[#3B1083] mb-2">
-                        Common Uses
-                      </h3>
+                    {/* Common Uses */}
+                    <DetailSection title="Common Uses">
                       <ul className="list-disc list-inside space-y-1">
                         {treeData.detailedInfo.uses.map((use, index) => (
-                          <li key={index} className="text-gray-700">
+                          <li key={index} className={THEME.colors.text.body}>
                             {use}
                           </li>
                         ))}
                       </ul>
-                    </div>
+                    </DetailSection>
 
-                    <div>
-                      <h3 className="text-lg font-semibold text-[#3B1083] mb-2">
-                        Maintenance Tips
-                      </h3>
+                    {/* Maintenance Tips */}
+                    <DetailSection title="Maintenance Tips">
                       <ul className="list-disc list-inside space-y-1">
                         {treeData.detailedInfo.maintenance.map((tip, index) => (
-                          <li key={index} className="text-gray-700">
+                          <li key={index} className={THEME.colors.text.body}>
                             {tip}
                           </li>
                         ))}
                       </ul>
-                    </div>
+                    </DetailSection>
                   </div>
                 )}
               </div>
@@ -241,3 +266,61 @@ export const AboutPage = () => {
     </div>
   );
 };
+
+// Reusable components
+const InfoItem = ({
+  icon,
+  label,
+  value,
+}: {
+  icon: string;
+  label: string;
+  value: string;
+}) => (
+  <div className="flex items-center gap-2">
+    <span style={{ color: THEME.colors.primary }}>{icon}</span>
+    <span className="font-medium">{label}:</span>
+    <span className={THEME.colors.text.body}>{value}</span>
+  </div>
+);
+
+const DetailSection = ({
+  title,
+  children,
+  className = "",
+}: {
+  title: string;
+  children: React.ReactNode;
+  className?: string;
+}) => (
+  <div className="space-y-3">
+    <h3
+      className={`${THEME.typography.subtitle}`}
+      style={{ color: THEME.colors.primary }}
+    >
+      {title}
+    </h3>
+    <div className={className}>{children}</div>
+  </div>
+);
+
+const DetailItem = ({
+  label,
+  value,
+  capitalize = false,
+}: {
+  label: string;
+  value: string;
+  capitalize?: boolean;
+}) => (
+  <div>
+    <p
+      className={`text-sm ${THEME.colors.text.muted} ${
+        capitalize ? "capitalize" : ""
+      }`}
+    >
+      {label}
+    </p>
+    <p className="font-medium">{value}</p>
+  </div>
+);
