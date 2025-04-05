@@ -10,6 +10,15 @@ export interface Tree {
   GeoLocation: string; // This is a JSON string that needs to be parsed
 }
 
+export interface TreeDetails extends Tree {
+  Description?: string;
+  Characteristics?: {
+    height: string;
+    spread: string;
+    habitat: string;
+  };
+}
+
 export interface TreeData extends Omit<Tree, "GeoLocation"> {
   GeoLocation: TreeLocation[];
 }
