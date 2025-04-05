@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Tree } from "../types/api";
+import { Tree } from "../types/tree";
 
 export const useTrees = () => {
   const [trees, setTrees] = useState<Tree[]>([]);
@@ -18,21 +18,19 @@ export const useTrees = () => {
           "ThemeEntityAbridgedData"
         );
         const transformedTrees = Array.from(treeElements).map((tree) => {
-          const defaultImagePath =
+          const DefaultImagePath =
             tree.querySelector("DefaultImagePath")?.textContent || "";
-          const displayName =
+          const DisplayName =
             tree.querySelector("DisplayName")?.textContent || "";
-          const entityId = parseInt(
-            tree.querySelector("EntityId")?.textContent || "0"
-          );
-          const geoLocationText =
+          const EntityId = tree.querySelector("EntityId")?.textContent || "";
+          const GeoLocation =
             tree.querySelector("GeoLocation")?.textContent || "[]";
 
           return {
-            defaultImagePath,
-            displayName,
-            entityId,
-            geoLocation: JSON.parse(geoLocationText),
+            DefaultImagePath,
+            DisplayName,
+            EntityId,
+            GeoLocation,
           };
         });
 
