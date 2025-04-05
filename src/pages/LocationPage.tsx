@@ -1,5 +1,6 @@
 import { useTrees } from "../hooks/useTrees";
 import { Spinner } from "../components/ui/Spinner";
+import THEME from "../utils/theme-config";
 
 const GOOGLE_MAPS_API_KEY =
   import.meta.env.VITE_GOOGLE_MAPS_API_KEY ||
@@ -12,11 +13,16 @@ export const LocationPage = () => {
   if (error) return <div className="text-red-500">Error: {error}</div>;
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold text-green-800 mb-8">Tree Locations</h1>
+    <div className={`px-4 py-8 ${THEME.spacing.container}`}>
+      <h1
+        className={`${THEME.typography.title} mb-8`}
+        style={{ color: THEME.colors.primary }}
+      >
+        Tree Locations
+      </h1>
       {trees.length === 0 ? (
         <div className="bg-white p-6 rounded-lg shadow text-center">
-          <p className="text-gray-600">
+          <p className={THEME.colors.text.muted}>
             No trees found. Please check the data source.
           </p>
         </div>
@@ -28,12 +34,17 @@ export const LocationPage = () => {
               className="bg-white rounded-lg shadow-md overflow-hidden"
             >
               <div className="p-4">
-                <h3 className="text-lg font-semibold text-green-800 mb-4">
+                <h3
+                  className="text-lg font-semibold mb-4"
+                  style={{ color: THEME.colors.primary }}
+                >
                   {tree.DisplayName}
                 </h3>
                 {tree.geoLocation && tree.geoLocation.length > 0 ? (
                   <>
-                    <div className="flex items-center text-gray-600 mb-4">
+                    <div
+                      className={`flex items-center ${THEME.colors.text.muted} mb-4`}
+                    >
                       <svg
                         className="w-5 h-5 mr-2"
                         fill="none"
