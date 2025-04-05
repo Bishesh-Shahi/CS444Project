@@ -2,7 +2,7 @@ import { Link, useLocation } from "react-router-dom";
 import { FaTree } from "react-icons/fa";
 import { MdLocationOn } from "react-icons/md";
 import { BiInfoCircle } from "react-icons/bi";
-import { Button } from "./Button";
+import { IoImagesOutline } from "react-icons/io5";
 
 export const Navigation = () => {
   const location = useLocation();
@@ -57,16 +57,22 @@ export const Navigation = () => {
                 <span>Location</span>
               </Link>
             </li>
+            <li className="header__nav-item">
+              <Link
+                to="/images"
+                className={`header__link ${
+                  isActive("/images") ? "header__link--active" : ""
+                }`}
+              >
+                <IoImagesOutline
+                  className="header__link-icon"
+                  aria-hidden="true"
+                />
+                <span>Images</span>
+              </Link>
+            </li>
           </ul>
         </nav>
-
-        {/* Action Buttons */}
-        <div className="header__actions">
-          <Button variant="ghost" size="sm">
-            Sign In
-          </Button>
-          <Button>Get Started</Button>
-        </div>
 
         {/* Mobile Menu Button */}
         <button className="header__menu-button" aria-label="Toggle menu">
