@@ -3,7 +3,7 @@ import { useTrees } from "../hooks/useTrees";
 import { Spinner } from "../components/ui/Spinner";
 import { useNavigate } from "react-router-dom";
 
-// Constants for consistent styling
+// Constants extracted to a separate object for better maintainability
 const THEME = {
   colors: {
     primary: "#3B1083",
@@ -33,47 +33,46 @@ const THEME = {
   },
 };
 
-// Add Google Maps API key
+// Required Google Maps API key for location functionality
 const GOOGLE_MAPS_API_KEY = "AIzaSyA7A6fU2pWSO3O2x9b9_yE3mTDZmNllNg8";
 
-const sampleTreeData = {
-  "Austrian Pine": {
-    essentialInfo: {
-      height: "40-60 feet",
-      spread: "20-40 feet",
-      growthRate: "Medium, about 13-24 inches per year",
-      lifespan: "100-150 years",
+// Sample tree data for UI development - would be replaced by API data in production
+const SAMPLE_TREE_DATA = {
+  essentialInfo: {
+    height: "40-60 feet",
+    spread: "20-40 feet",
+    growthRate: "Medium, about 13-24 inches per year",
+    lifespan: "100-150 years",
+  },
+  detailedInfo: {
+    scientificName: "Pinus nigra",
+    family: "Pinaceae",
+    nativeRange: "Central and Southern Europe",
+    description: `The Austrian Pine is a large evergreen conifer known for its dense, dark green needles and robust growth habit. It's highly adaptable and tolerant of urban conditions.`,
+    characteristics: {
+      bark: "Dark gray to brown-black, deeply furrowed and scaly",
+      needles: "Dark green, stiff, 4-6 inches long, in bundles of 2",
+      cones: "2-3 inches long, light brown when mature",
+      flowers: "Male cones yellow, female cones reddish",
     },
-    detailedInfo: {
-      scientificName: "Pinus nigra",
-      family: "Pinaceae",
-      nativeRange: "Central and Southern Europe",
-      description: `The Austrian Pine is a large evergreen conifer known for its dense, dark green needles and robust growth habit. It's highly adaptable and tolerant of urban conditions.`,
-      characteristics: {
-        bark: "Dark gray to brown-black, deeply furrowed and scaly",
-        needles: "Dark green, stiff, 4-6 inches long, in bundles of 2",
-        cones: "2-3 inches long, light brown when mature",
-        flowers: "Male cones yellow, female cones reddish",
-      },
-      growthRequirements: {
-        sunlight: "Full sun",
-        soil: "Adaptable to various soils, prefers well-drained",
-        water: "Drought tolerant once established",
-        hardiness: "USDA zones 4-8",
-      },
-      uses: [
-        "Windbreaks and screens",
-        "Urban street tree",
-        "Parks and large landscapes",
-        "Christmas tree production",
-      ],
-      maintenance: [
-        "Prune dead or damaged branches as needed",
-        "Monitor for pine wilt disease",
-        "Remove fallen needles and cones",
-        "Water deeply during establishment",
-      ],
+    growthRequirements: {
+      sunlight: "Full sun",
+      soil: "Adaptable to various soils, prefers well-drained",
+      water: "Drought tolerant once established",
+      hardiness: "USDA zones 4-8",
     },
+    uses: [
+      "Windbreaks and screens",
+      "Urban street tree",
+      "Parks and large landscapes",
+      "Christmas tree production",
+    ],
+    maintenance: [
+      "Prune dead or damaged branches as needed",
+      "Monitor for pine wilt disease",
+      "Remove fallen needles and cones",
+      "Water deeply during establishment",
+    ],
   },
 };
 
@@ -124,20 +123,20 @@ export const AboutPage = () => {
       <div className="grid gap-4 sm:gap-6 md:gap-8">
         {trees.map((tree) => {
           const isExpanded = expandedTrees.has(tree.EntityId);
-          const treeData = sampleTreeData["Austrian Pine"];
+          const treeData = SAMPLE_TREE_DATA;
           const locationString = getLocationString(tree.GeoLocation);
 
           return (
             <div
               key={tree.EntityId}
-              className={`${THEME.colors.background.card} rounded-lg shadow-md overflow-hidden relative`}
+              className={`${THEME.colors.background.card} rounded-lg shadow-md overflow-hidden relative tree-card`}
             >
               {/* Tree Image Section */}
-              <div className="relative aspect-w-16 aspect-h-12 sm:aspect-h-9">
+              <div className="relative aspect-w-16 aspect-h-12 sm:aspect-h-9 tree-card__image-container">
                 <img
                   src={tree.DefaultImagePath}
                   alt={tree.DisplayName}
-                  className="object-cover w-full h-full"
+                  className="object-cover w-full h-full tree-card__image"
                   onError={(e) => {
                     e.currentTarget.src =
                       "https://plus.unsplash.com/premium_photo-1676654936916-831f9c11e8fe?q=80&w=1887&auto=format&fit=crop";
@@ -146,18 +145,18 @@ export const AboutPage = () => {
               </div>
 
               {/* Content Section */}
-              <div className="p-4 sm:p-6">
+              <div className="p-4 sm:p-6 tree-card__content">
                 {/* Header */}
                 <h2
-                  className={`${THEME.typography.title} mb-6`}
+                  className={`${THEME.typography.title} mb-6 tree-card__title`}
                   style={{ color: THEME.colors.primary }}
                 >
                   {tree.DisplayName}
                 </h2>
 
                 {/* Main Content - Always visible */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
-                  <div className="space-y-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6 tree-card__info-grid">
+                  <div className="space-y-3 tree-card__info-column">
                     <InfoItem
                       icon="🌲"
                       label="Height"
@@ -170,7 +169,7 @@ export const AboutPage = () => {
                     />
                     {locationString && (
                       <div
-                        className="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-1 rounded-md transition-colors duration-200"
+                        className="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-1 rounded-md transition-colors duration-200 tree-card__location-link"
                         onClick={() => goToLocationPage(tree.EntityId)}
                       >
                         <span style={{ color: THEME.colors.primary }}>📍</span>
@@ -197,7 +196,7 @@ export const AboutPage = () => {
                       </div>
                     )}
                   </div>
-                  <div className="space-y-3">
+                  <div className="space-y-3 tree-card__info-column">
                     <InfoItem
                       icon="📈"
                       label="Growth Rate"
@@ -209,7 +208,7 @@ export const AboutPage = () => {
                       value={treeData.essentialInfo.lifespan}
                     />
                     <div
-                      className="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-1 rounded-md transition-colors duration-200"
+                      className="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-1 rounded-md transition-colors duration-200 tree-card__images-link"
                       onClick={() => goToImagesPage(tree.EntityId)}
                     >
                       <span style={{ color: THEME.colors.primary }}>🖼️</span>
@@ -242,7 +241,7 @@ export const AboutPage = () => {
                   onClick={() => toggleTreeInfo(tree.EntityId)}
                   className={`
                     w-full px-4 py-2 text-sm font-medium border rounded-full
-                    transition-all duration-200
+                    transition-all duration-200 tree-card__toggle-button
                     ${
                       isExpanded
                         ? `${THEME.colors.background.button.active} text-white ${THEME.colors.border.primary}`
@@ -256,9 +255,9 @@ export const AboutPage = () => {
                 {/* Detailed Information (Expandable) */}
                 {isExpanded && (
                   <div
-                    className={`mt-6 border-t pt-6 ${THEME.spacing.section}`}
+                    className={`mt-6 border-t pt-6 ${THEME.spacing.section} tree-card__details`}
                   >
-                    {/* Detailed sections remain the same */}
+                    {/* Scientific details section */}
                     <DetailSection
                       title="Scientific Details"
                       className="grid grid-cols-1 sm:grid-cols-2 gap-4"
@@ -277,6 +276,7 @@ export const AboutPage = () => {
                       />
                     </DetailSection>
 
+                    {/* Description section */}
                     <DetailSection title="Description">
                       <p
                         className={`${THEME.colors.text.body} leading-relaxed`}
@@ -285,6 +285,7 @@ export const AboutPage = () => {
                       </p>
                     </DetailSection>
 
+                    {/* Characteristics section */}
                     <DetailSection
                       title="Characteristics"
                       className="grid grid-cols-1 sm:grid-cols-2 gap-4"
@@ -301,6 +302,7 @@ export const AboutPage = () => {
                       ))}
                     </DetailSection>
 
+                    {/* Growing Requirements section */}
                     <DetailSection
                       title="Growing Requirements"
                       className="grid grid-cols-1 sm:grid-cols-2 gap-4"
@@ -317,6 +319,7 @@ export const AboutPage = () => {
                       ))}
                     </DetailSection>
 
+                    {/* Common Uses section */}
                     <DetailSection title="Common Uses">
                       <ul className="list-disc list-inside space-y-1">
                         {treeData.detailedInfo.uses.map((use, index) => (
@@ -327,6 +330,7 @@ export const AboutPage = () => {
                       </ul>
                     </DetailSection>
 
+                    {/* Maintenance Tips section */}
                     <DetailSection title="Maintenance Tips">
                       <ul className="list-disc list-inside space-y-1">
                         {treeData.detailedInfo.maintenance.map((tip, index) => (
@@ -347,7 +351,7 @@ export const AboutPage = () => {
   );
 };
 
-// Reusable components
+// Info Item component for displaying a single item of information
 const InfoItem = ({
   icon,
   label,
@@ -361,14 +365,18 @@ const InfoItem = ({
   actionLabel?: string;
   onAction?: () => void;
 }) => (
-  <div className="flex items-center gap-2">
-    <span style={{ color: THEME.colors.primary }}>{icon}</span>
-    <span className="font-medium">{label}:</span>
-    <span className={THEME.colors.text.body}>{value}</span>
+  <div className="flex items-center gap-2 info-item">
+    <span className="info-item__icon" style={{ color: THEME.colors.primary }}>
+      {icon}
+    </span>
+    <span className="font-medium info-item__label">{label}:</span>
+    <span className={`${THEME.colors.text.body} info-item__value`}>
+      {value}
+    </span>
     {actionLabel && onAction && (
       <button
         onClick={onAction}
-        className="ml-auto text-sm text-white bg-[#3B1083] px-2 py-1 rounded hover:bg-[#2d0c66]"
+        className="ml-auto text-sm text-white bg-[#3B1083] px-2 py-1 rounded hover:bg-[#2d0c66] info-item__action"
       >
         {actionLabel}
       </button>
@@ -376,6 +384,7 @@ const InfoItem = ({
   </div>
 );
 
+// Detail Section component for organizing sections of detailed information
 const DetailSection = ({
   title,
   children,
@@ -385,17 +394,18 @@ const DetailSection = ({
   children: React.ReactNode;
   className?: string;
 }) => (
-  <div className="space-y-3">
+  <div className="space-y-3 detail-section">
     <h3
-      className={`${THEME.typography.subtitle}`}
+      className={`${THEME.typography.subtitle} detail-section__title`}
       style={{ color: THEME.colors.primary }}
     >
       {title}
     </h3>
-    <div className={className}>{children}</div>
+    <div className={`${className} detail-section__content`}>{children}</div>
   </div>
 );
 
+// Detail Item component for displaying a key-value pair within a detail section
 const DetailItem = ({
   label,
   value,
@@ -405,14 +415,14 @@ const DetailItem = ({
   value: string;
   capitalize?: boolean;
 }) => (
-  <div>
+  <div className="detail-item">
     <p
       className={`text-sm ${THEME.colors.text.muted} ${
         capitalize ? "capitalize" : ""
-      }`}
+      } detail-item__label`}
     >
       {label}
     </p>
-    <p className="font-medium">{value}</p>
+    <p className="font-medium detail-item__value">{value}</p>
   </div>
 );
