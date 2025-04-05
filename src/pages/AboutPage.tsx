@@ -45,7 +45,7 @@ const SAMPLE_TREE_DATA = {
 };
 
 // Required Google Maps API key for location functionality
-const GOOGLE_MAPS_API_KEY = "REMOVED_API_KEY";
+const GOOGLE_MAPS_API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY || "";
 
 export const AboutPage = () => {
   const { trees, loading, error } = useTrees();
