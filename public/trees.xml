@@ -14,11 +14,11 @@
 <GeoLocation>[{"Lat":"44.047736","Lng":"-91.643241"}]</GeoLocation>
 </ThemeEntityAbridgedData>
 
-<!-- <ThemeEntityAbridgedData>
+<ThemeEntityAbridgedData>
 <DefaultImagePath>https://w3.winona.edu/Locations/Resources/GinkgoOrMaidenhairTree.png</DefaultImagePath>
 <DisplayName>Ginkgo</DisplayName>
 <EntityId>15</EntityId>
-<GeoLocation>[{"Lat":"44.047240","Lng":"-91.643880"}]</GeoLocation> -->
+<GeoLocation>[{"Lat":"44.047240","Lng":"-91.643880"}]</GeoLocation>
 
 <!-- </ThemeEntityAbridgedData>
 <ThemeEntityAbridgedData>
