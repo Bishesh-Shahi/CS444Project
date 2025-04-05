@@ -3,7 +3,7 @@
   position: sticky;
   top: 0;
   z-index: 50;
-  background-color: hsl(var(--background));
+  background-color: #3b1083;
   border-bottom: 1px solid hsl(var(--border));
   -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
@@ -16,6 +16,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  background-color: #3b1083;
 }
 
 /* Logo */
@@ -48,6 +49,7 @@
 
 .header__logo-text {
   font-weight: 700;
+  /* color: white; */
 }
 
 /* Navigation */
@@ -207,4 +209,66 @@
   100% {
     transform: rotate(360deg);
   }
+}
+
+/* Image Gallery */
+.gallery {
+  @apply container mx-auto px-4 py-8;
+}
+
+.gallery__grid {
+  @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6;
+}
+
+.gallery__item {
+  @apply group relative overflow-hidden rounded-lg shadow-lg transition-transform hover:-translate-y-1 hover:shadow-xl cursor-pointer;
+}
+
+.gallery__image-wrapper {
+  @apply aspect-w-4 aspect-h-3;
+}
+
+.gallery__image {
+  @apply object-cover w-full h-full transition-transform group-hover:scale-105;
+}
+
+.gallery__overlay {
+  @apply absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity;
+}
+
+.gallery__title {
+  @apply absolute bottom-0 left-0 right-0 p-4 text-white font-semibold text-lg;
+}
+
+/* Modal */
+.modal {
+  @apply fixed inset-0 bg-black/50 flex items-center justify-center z-50;
+}
+
+.modal__content {
+  @apply bg-white rounded-lg p-4 max-w-4xl w-full mx-4;
+}
+
+.modal__image-wrapper {
+  @apply relative;
+}
+
+.modal__image {
+  @apply w-full h-auto rounded;
+}
+
+.modal__close {
+  @apply absolute top-2 right-2 bg-black/50 text-white w-8 h-8 rounded-full flex items-center justify-center hover:bg-black/70;
+}
+
+.modal__info {
+  @apply mt-4;
+}
+
+.modal__title {
+  @apply text-2xl font-bold;
+}
+
+.modal__location {
+  @apply text-gray-600 mt-2;
 }
