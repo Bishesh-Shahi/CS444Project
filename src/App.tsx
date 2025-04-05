@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -12,8 +12,9 @@ import { RootLayout } from "./layouts/RootLayout";
 import { PlantDetail } from "./components/plants/PlantDetail";
 import { Spinner } from "./components/ui/Spinner";
 import { usePlant } from "./hooks/usePlant";
-import { TreeList } from "./components/TreeList";
+import { TreeList } from "@/components/trees/TreeList";
 import { TreeDetail } from "./components/trees/TreeDetail";
+import { Layout } from "@/layouts/Layout";
 
 // Sample data
 const samplePlant = {
