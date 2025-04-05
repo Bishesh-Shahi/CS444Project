@@ -2,6 +2,9 @@ import { useState } from "react";
 import { useTrees } from "../hooks/useTrees";
 import { Spinner } from "../components/ui/Spinner";
 
+// Add tab type
+type TabType = "about" | "location" | "images";
+
 // Constants for consistent styling
 const THEME = {
   colors: {
@@ -31,6 +34,9 @@ const THEME = {
     body: "text-base",
   },
 };
+
+// Add Google Maps API key
+const GOOGLE_MAPS_API_KEY = "REMOVED_API_KEY";
 
 const sampleTreeData = {
   "Austrian Pine": {
@@ -76,6 +82,7 @@ const sampleTreeData = {
 export const AboutPage = () => {
   const { trees, loading, error } = useTrees();
   const [expandedTrees, setExpandedTrees] = useState<Set<string>>(new Set());
+  const [activeTab, setActiveTab] = useState<TabType>("about");
 
   if (loading) return <Spinner />;
   if (error) return <div className="text-red-500">Error: {error}</div>;
@@ -90,12 +97,29 @@ export const AboutPage = () => {
     setExpandedTrees(newExpanded);
   };
 
+  const getLocationString = (geoLocation: string) => {
+    try {
+      const location = JSON.parse(geoLocation)[0];
+      if (!location || !location.Lat || !location.Lng) return null;
+
+      // Format coordinates with 6 decimal places
+      const lat = parseFloat(location.Lat).toFixed(6);
+      const lng = parseFloat(location.Lng).toFixed(6);
+
+      return `${lat}°N, ${lng}°W`;
+    } catch {
+      console.error("Failed to parse location:", geoLocation);
+      return null;
+    }
+  };
+
   return (
     <div className={`py-4 sm:py-6 md:py-8 ${THEME.spacing.container}`}>
       <div className="grid gap-4 sm:gap-6 md:gap-8">
         {trees.map((tree) => {
           const isExpanded = expandedTrees.has(tree.EntityId);
           const treeData = sampleTreeData["Austrian Pine"];
+          const locationString = getLocationString(tree.GeoLocation);
 
           return (
             <div
@@ -105,10 +129,7 @@ export const AboutPage = () => {
               {/* Tree Image Section */}
               <div className="relative aspect-w-16 aspect-h-12 sm:aspect-h-9">
                 <img
-                  src={
-                    tree.DefaultImagePath ||
-                    "https://plus.unsplash.com/premium_photo-1676654936916-831f9c11e8fe?q=80&w=1887&auto=format&fit=crop"
-                  }
+                  src={tree.DefaultImagePath}
                   alt={tree.DisplayName}
                   className="object-cover w-full h-full"
                   onError={(e) => {
@@ -121,28 +142,12 @@ export const AboutPage = () => {
               {/* Content Section */}
               <div className="p-4 sm:p-6">
                 {/* Header */}
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
-                  <h2
-                    className={`${THEME.typography.title}`}
-                    style={{ color: THEME.colors.primary }}
-                  >
-                    {tree.DisplayName}
-                  </h2>
-                  <button
-                    onClick={() => toggleTreeInfo(tree.EntityId)}
-                    className={`
-                      px-4 py-2 text-sm font-medium border rounded-full
-                      transition-all duration-200 w-full sm:w-auto
-                      ${
-                        isExpanded
-                          ? `${THEME.colors.background.button.active} text-white ${THEME.colors.border.primary}`
-                          : `text-[${THEME.colors.primary}] ${THEME.colors.border.primary} ${THEME.colors.background.button.hover} hover:text-white`
-                      }
-                    `}
-                  >
-                    {isExpanded ? "Show Less" : "Show More"}
-                  </button>
-                </div>
+                <h2
+                  className={`${THEME.typography.title} mb-6`}
+                  style={{ color: THEME.colors.primary }}
+                >
+                  {tree.DisplayName}
+                </h2>
 
                 {/* Essential Information */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
@@ -157,6 +162,13 @@ export const AboutPage = () => {
                       label="Spread"
                       value={treeData.essentialInfo.spread}
                     />
+                    {locationString && (
+                      <InfoItem
+                        icon="📍"
+                        label="Location"
+                        value={locationString}
+                      />
+                    )}
                   </div>
                   <div className="space-y-3">
                     <InfoItem
@@ -172,12 +184,26 @@ export const AboutPage = () => {
                   </div>
                 </div>
 
+                <button
+                  onClick={() => toggleTreeInfo(tree.EntityId)}
+                  className={`
+                    w-full px-4 py-2 text-sm font-medium border rounded-full
+                    transition-all duration-200
+                    ${
+                      isExpanded
+                        ? `${THEME.colors.background.button.active} text-white ${THEME.colors.border.primary}`
+                        : `text-[${THEME.colors.primary}] ${THEME.colors.border.primary} ${THEME.colors.background.button.hover} hover:text-white`
+                    }
+                  `}
+                >
+                  {isExpanded ? "Show Less" : "Show More"}
+                </button>
+
                 {/* Detailed Information (Expandable) */}
                 {isExpanded && (
                   <div
                     className={`mt-6 border-t pt-6 ${THEME.spacing.section}`}
                   >
-                    {/* Scientific Details */}
                     <DetailSection
                       title="Scientific Details"
                       className="grid grid-cols-1 sm:grid-cols-2 gap-4"
@@ -190,9 +216,12 @@ export const AboutPage = () => {
                         label="Family"
                         value={treeData.detailedInfo.family}
                       />
+                      <DetailItem
+                        label="Native Range"
+                        value={treeData.detailedInfo.nativeRange}
+                      />
                     </DetailSection>
 
-                    {/* Description */}
                     <DetailSection title="Description">
                       <p
                         className={`${THEME.colors.text.body} leading-relaxed`}
@@ -201,7 +230,6 @@ export const AboutPage = () => {
                       </p>
                     </DetailSection>
 
-                    {/* Characteristics */}
                     <DetailSection
                       title="Characteristics"
                       className="grid grid-cols-1 sm:grid-cols-2 gap-4"
@@ -218,7 +246,6 @@ export const AboutPage = () => {
                       ))}
                     </DetailSection>
 
-                    {/* Growing Requirements */}
                     <DetailSection
                       title="Growing Requirements"
                       className="grid grid-cols-1 sm:grid-cols-2 gap-4"
@@ -235,7 +262,6 @@ export const AboutPage = () => {
                       ))}
                     </DetailSection>
 
-                    {/* Common Uses */}
                     <DetailSection title="Common Uses">
                       <ul className="list-disc list-inside space-y-1">
                         {treeData.detailedInfo.uses.map((use, index) => (
@@ -246,7 +272,6 @@ export const AboutPage = () => {
                       </ul>
                     </DetailSection>
 
-                    {/* Maintenance Tips */}
                     <DetailSection title="Maintenance Tips">
                       <ul className="list-disc list-inside space-y-1">
                         {treeData.detailedInfo.maintenance.map((tip, index) => (
