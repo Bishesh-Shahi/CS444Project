@@ -1,9 +1,7 @@
 import { useState } from "react";
 import { useTrees } from "../hooks/useTrees";
 import { Spinner } from "../components/ui/Spinner";
-
-// Add tab type
-type TabType = "about" | "location" | "images";
+import { useNavigate } from "react-router-dom";
 
 // Constants for consistent styling
 const THEME = {
@@ -81,8 +79,8 @@ const sampleTreeData = {
 
 export const AboutPage = () => {
   const { trees, loading, error } = useTrees();
+  const navigate = useNavigate();
   const [expandedTrees, setExpandedTrees] = useState<Set<string>>(new Set());
-  const [activeTab, setActiveTab] = useState<TabType>("about");
 
   if (loading) return <Spinner />;
   if (error) return <div className="text-red-500">Error: {error}</div>;
@@ -113,6 +111,14 @@ export const AboutPage = () => {
     }
   };
 
+  const goToLocationPage = (treeId: string) => {
+    navigate(`/location?treeId=${treeId}`);
+  };
+
+  const goToImagesPage = (treeId: string) => {
+    navigate(`/images?treeId=${treeId}`);
+  };
+
   return (
     <div className={`py-4 sm:py-6 md:py-8 ${THEME.spacing.container}`}>
       <div className="grid gap-4 sm:gap-6 md:gap-8">
@@ -124,7 +130,7 @@ export const AboutPage = () => {
           return (
             <div
               key={tree.EntityId}
-              className={`${THEME.colors.background.card} rounded-lg shadow-md overflow-hidden`}
+              className={`${THEME.colors.background.card} rounded-lg shadow-md overflow-hidden relative`}
             >
               {/* Tree Image Section */}
               <div className="relative aspect-w-16 aspect-h-12 sm:aspect-h-9">
@@ -149,7 +155,7 @@ export const AboutPage = () => {
                   {tree.DisplayName}
                 </h2>
 
-                {/* Essential Information */}
+                {/* Main Content - Always visible */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
                   <div className="space-y-3">
                     <InfoItem
@@ -163,11 +169,32 @@ export const AboutPage = () => {
                       value={treeData.essentialInfo.spread}
                     />
                     {locationString && (
-                      <InfoItem
-                        icon="📍"
-                        label="Location"
-                        value={locationString}
-                      />
+                      <div
+                        className="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-1 rounded-md transition-colors duration-200"
+                        onClick={() => goToLocationPage(tree.EntityId)}
+                      >
+                        <span style={{ color: THEME.colors.primary }}>📍</span>
+                        <span className="font-medium">Location:</span>
+                        <span className={THEME.colors.text.body}>
+                          {locationString}
+                        </span>
+                        <span className="ml-auto text-sm text-gray-500">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth={1.5}
+                            stroke="currentColor"
+                            className="w-4 h-4"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
+                            />
+                          </svg>
+                        </span>
+                      </div>
                     )}
                   </div>
                   <div className="space-y-3">
@@ -181,9 +208,36 @@ export const AboutPage = () => {
                       label="Lifespan"
                       value={treeData.essentialInfo.lifespan}
                     />
+                    <div
+                      className="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-1 rounded-md transition-colors duration-200"
+                      onClick={() => goToImagesPage(tree.EntityId)}
+                    >
+                      <span style={{ color: THEME.colors.primary }}>🖼️</span>
+                      <span className="font-medium">Images:</span>
+                      <span className={THEME.colors.text.body}>
+                        View Gallery
+                      </span>
+                      <span className="ml-auto text-sm text-gray-500">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          strokeWidth={1.5}
+                          stroke="currentColor"
+                          className="w-4 h-4"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
+                          />
+                        </svg>
+                      </span>
+                    </div>
                   </div>
                 </div>
 
+                {/* Show More Button */}
                 <button
                   onClick={() => toggleTreeInfo(tree.EntityId)}
                   className={`
@@ -204,6 +258,7 @@ export const AboutPage = () => {
                   <div
                     className={`mt-6 border-t pt-6 ${THEME.spacing.section}`}
                   >
+                    {/* Detailed sections remain the same */}
                     <DetailSection
                       title="Scientific Details"
                       className="grid grid-cols-1 sm:grid-cols-2 gap-4"
@@ -297,15 +352,27 @@ const InfoItem = ({
   icon,
   label,
   value,
+  actionLabel,
+  onAction,
 }: {
   icon: string;
   label: string;
   value: string;
+  actionLabel?: string;
+  onAction?: () => void;
 }) => (
   <div className="flex items-center gap-2">
     <span style={{ color: THEME.colors.primary }}>{icon}</span>
     <span className="font-medium">{label}:</span>
     <span className={THEME.colors.text.body}>{value}</span>
+    {actionLabel && onAction && (
+      <button
+        onClick={onAction}
+        className="ml-auto text-sm text-white bg-[#3B1083] px-2 py-1 rounded hover:bg-[#2d0c66]"
+      >
+        {actionLabel}
+      </button>
+    )}
   </div>
 );
 
