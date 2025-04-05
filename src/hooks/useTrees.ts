@@ -1,6 +1,13 @@
+/**
+ * Hook for fetching and managing tree data
+ */
 import { useState, useEffect } from "react";
 import { Tree } from "../types/tree";
 
+/**
+ * Hook that fetches all trees from the API
+ * @returns Object containing trees array, loading state, and any error that occurred
+ */
 export const useTrees = () => {
   const [trees, setTrees] = useState<Tree[]>([]);
   const [loading, setLoading] = useState(true);
@@ -9,14 +16,29 @@ export const useTrees = () => {
   useEffect(() => {
     const fetchTrees = async () => {
       try {
+        // Fetch tree data from local XML file
         const response = await fetch("/trees.xml");
+
+        if (!response.ok) {
+          throw new Error(
+            `Failed to fetch trees: ${response.status} ${response.statusText}`
+          );
+        }
+
         const xmlText = await response.text();
         const parser = new DOMParser();
         const xmlDoc = parser.parseFromString(xmlText, "text/xml");
 
+        // Extract tree data from XML
         const treeElements = xmlDoc.getElementsByTagName(
           "ThemeEntityAbridgedData"
         );
+
+        if (!treeElements || treeElements.length === 0) {
+          throw new Error("No trees found in XML data");
+        }
+
+        // Transform XML elements to Tree objects
         const transformedTrees = Array.from(treeElements).map((tree) => {
           const DefaultImagePath =
             tree.querySelector("DefaultImagePath")?.textContent || "";
@@ -37,7 +59,9 @@ export const useTrees = () => {
         setTrees(transformedTrees);
         setError(null);
       } catch (err) {
+        console.error("Error fetching trees:", err);
         setError(err instanceof Error ? err.message : "Failed to fetch trees");
+        setTrees([]);
       } finally {
         setLoading(false);
       }
