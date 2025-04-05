@@ -1,9 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ArrayOfThemeEntityAbridgedData xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.datacontract.org/2004/07/WSU.Locations.DTO">
-<ThemeEntityAbridgedData>
+<!-- <ThemeEntityAbridgedData>
 <DefaultImagePath>https://w3.winona.edu/Locations/Resources/AustrianPine.png</DefaultImagePath>
 <DisplayName>Austrian Pine</DisplayName>
 <EntityId>3</EntityId>
 <GeoLocation>[{"Lat":"44.047318","Lng":"-91.644497"}]</GeoLocation>
+</ThemeEntityAbridgedData> -->
+
+<ThemeEntityAbridgedData>
+<DefaultImagePath>https://w3.winona.edu/Locations/Resources/TulipTree.png</DefaultImagePath>
+<DisplayName>Tulip Tree</DisplayName>
+<EntityId>35</EntityId>
+<GeoLocation>[{"Lat":"44.047736","Lng":"-91.643241"}]</GeoLocation>
 </ThemeEntityAbridgedData>
+
+<!-- <ThemeEntityAbridgedData>
+<DefaultImagePath>https://w3.winona.edu/Locations/Resources/GinkgoOrMaidenhairTree.png</DefaultImagePath>
+<DisplayName>Ginkgo</DisplayName>
+<EntityId>15</EntityId>
+<GeoLocation>[{"Lat":"44.047240","Lng":"-91.643880"}]</GeoLocation> -->
+
+<!-- </ThemeEntityAbridgedData>
+<ThemeEntityAbridgedData>
+<DefaultImagePath>https://w3.winona.edu/Locations/Resources/RedMaple.png</DefaultImagePath>
+<DisplayName>Red Maple</DisplayName>
+<EntityId>25</EntityId>
+<GeoLocation>[{"Lat":"44.046120","Lng":"-91.644340"}]</GeoLocation>
+</ThemeEntityAbridgedData> -->
+
+<!-- <ThemeEntityAbridgedData>
+<DefaultImagePath>https://w3.winona.edu/Locations/Resources/Yellowwood.png</DefaultImagePath>
+<DisplayName>American Yellowwood</DisplayName>
+<EntityId>39</EntityId>
+<GeoLocation>[{"Lat":"44.047360","Lng":"-91.642980"}]</GeoLocation>
+</ThemeEntityAbridgedData> -->
 </ArrayOfThemeEntityAbridgedData> 

@@ -2,39 +2,7 @@ import { useState } from "react";
 import { useTrees } from "../hooks/useTrees";
 import { Spinner } from "../components/ui/Spinner";
 import { useNavigate } from "react-router-dom";
-
-// Constants extracted to a separate object for better maintainability
-const THEME = {
-  colors: {
-    primary: "#3B1083",
-    text: {
-      body: "text-gray-700",
-      muted: "text-gray-600",
-    },
-    background: {
-      card: "bg-white",
-      button: {
-        active: "bg-[#3B1083]",
-        hover: "hover:bg-[#3B1083]",
-      },
-    },
-    border: {
-      primary: "border-[#3B1083]",
-    },
-  },
-  spacing: {
-    container: "max-w-4xl mx-auto px-4 sm:px-6 lg:px-8",
-    section: "space-y-6",
-  },
-  typography: {
-    title: "text-xl sm:text-2xl md:text-3xl font-bold",
-    subtitle: "text-lg sm:text-xl font-semibold",
-    body: "text-base",
-  },
-};
-
-// Required Google Maps API key for location functionality
-const GOOGLE_MAPS_API_KEY = "AIzaSyA7A6fU2pWSO3O2x9b9_yE3mTDZmNllNg8";
+import THEME from "../utils/theme-config";
 
 // Sample tree data for UI development - would be replaced by API data in production
 const SAMPLE_TREE_DATA = {
@@ -75,6 +43,9 @@ const SAMPLE_TREE_DATA = {
     ],
   },
 };
+
+// Required Google Maps API key for location functionality
+const GOOGLE_MAPS_API_KEY = "AIzaSyA7A6fU2pWSO3O2x9b9_yE3mTDZmNllNg8";
 
 export const AboutPage = () => {
   const { trees, loading, error } = useTrees();
@@ -124,7 +95,9 @@ export const AboutPage = () => {
         {trees.map((tree) => {
           const isExpanded = expandedTrees.has(tree.EntityId);
           const treeData = SAMPLE_TREE_DATA;
-          const locationString = getLocationString(tree.GeoLocation);
+          const locationString = getLocationString(
+            JSON.stringify(tree.geoLocation || [])
+          );
 
           return (
             <div
