@@ -37,7 +37,7 @@ export const TreeDetail = () => {
   if (loading) return <Spinner />;
   if (error) return <div className="text-red-500">Error: {error}</div>;
 
-  const tree = trees.find((t) => t.entityId.toString() === id);
+  const tree = trees.find((t) => t.EntityId.toString() === id);
   if (!tree) return <div>Tree not found</div>;
 
   const sampleData = sampleTreeData["Ruby Red Horsechestnut"];
@@ -45,7 +45,7 @@ export const TreeDetail = () => {
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold text-green-800 mb-6">
-        {tree.displayName}
+        {tree.DisplayName}
       </h1>
 
       {/* Tabs */}
@@ -82,16 +82,16 @@ export const TreeDetail = () => {
               <div key={index} className="aspect-w-16 aspect-h-9">
                 <img
                   src={image}
-                  alt={`${tree.displayName} - View ${index + 1}`}
+                  alt={`${tree.DisplayName} - View ${index + 1}`}
                   className="object-cover rounded-lg shadow-md"
                 />
               </div>
             ))}
-            {tree.defaultImagePath && (
+            {tree.DefaultImagePath && (
               <div className="aspect-w-16 aspect-h-9">
                 <img
-                  src={tree.defaultImagePath}
-                  alt={tree.displayName}
+                  src={tree.DefaultImagePath}
+                  alt={tree.DisplayName}
                   className="object-cover rounded-lg shadow-md"
                 />
               </div>
