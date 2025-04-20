@@ -1,112 +1,134 @@
-import React from "react";
-import { Plant } from "../../hooks/usePlant";
+import { Plant } from "../../types/api";
 
 interface PlantDetailProps {
   plant: Plant;
-  className?: string;
 }
 
-export function PlantDetail({ plant, className }: PlantDetailProps) {
+export function PlantDetail({ plant }: PlantDetailProps) {
   return (
-    <div className={`grid grid-cols-1 lg:grid-cols-2 gap-8 ${className || ""}`}>
-      {/* Left column - Image placeholder since we don't have real images */}
-      <div className="relative h-[400px] rounded-lg overflow-hidden bg-gray-100">
-        <div className="w-full h-full flex items-center justify-center text-gray-500">
-          <img
-            src="https://plus.unsplash.com/premium_photo-1676654936916-831f9c11e8fe?q=80&w=1887&auto=format&fit=crop"
-            alt={plant.commonName}
-            className="w-full h-full object-cover"
-          />
-        </div>
+    <div className="space-y-8">
+      {/* Header */}
+      <div className="space-y-2">
+        <h1 className="text-3xl font-bold text-gray-900">{plant.commonName}</h1>
+        <p className="text-lg text-gray-600 italic">{plant.scientificName}</p>
+        <p className="text-sm text-gray-500">Family: {plant.family}</p>
       </div>
 
-      {/* Right column - Plant Information */}
-      <div className="space-y-6">
-        <div className="bg-[#3B1083] text-white p-6 rounded-lg">
-          <h1 className="text-2xl font-bold">{plant.commonName}</h1>
-          <p className="text-purple-200 italic">{plant.scientificName}</p>
-        </div>
+      {/* Description */}
+      <div className="prose max-w-none">
+        <p>{plant.description}</p>
+      </div>
 
-        <div className="bg-white p-6 rounded-lg shadow-sm space-y-6">
-          <div>
-            <h2 className="text-lg font-semibold text-[#3B1083] mb-2">
-              Description
+      {/* Characteristics */}
+      {plant.characteristics &&
+        Object.keys(plant.characteristics).length > 0 && (
+          <div className="space-y-4">
+            <h2 className="text-2xl font-semibold text-gray-900">
+              Characteristics
             </h2>
-            <p className="text-gray-700">{plant.description}</p>
-          </div>
-
-          <div className="grid grid-cols-2 gap-4">
-            {plant.height && (
-              <div>
-                <h3 className="font-semibold text-[#3B1083]">Height</h3>
-                <p className="text-gray-700">{plant.height}</p>
-              </div>
-            )}
-            {plant.width && (
-              <div>
-                <h3 className="font-semibold text-[#3B1083]">Spread</h3>
-                <p className="text-gray-700">{plant.width}</p>
-              </div>
-            )}
-            <div>
-              <h3 className="font-semibold text-[#3B1083]">Hardiness Zone</h3>
-              <p className="text-gray-700">{plant.hardiness}</p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {Object.entries(plant.characteristics).map(
+                ([key, value]) =>
+                  value && (
+                    <div key={key} className="space-y-1">
+                      <dt className="text-sm font-medium text-gray-500 capitalize">
+                        {key}
+                      </dt>
+                      <dd className="text-base text-gray-900">{value}</dd>
+                    </div>
+                  )
+              )}
             </div>
-            {plant.sunExposure && (
-              <div>
-                <h3 className="font-semibold text-[#3B1083]">Sun Exposure</h3>
-                <p className="text-gray-700">{plant.sunExposure}</p>
-              </div>
-            )}
           </div>
+        )}
 
-          {plant.features && plant.features.length > 0 && (
-            <div>
-              <h3 className="font-semibold text-[#3B1083] mb-2">Features</h3>
-              <ul className="list-disc list-inside space-y-1 text-gray-700">
-                {plant.features.map((feature, index) => (
-                  <li key={index}>{feature}</li>
-                ))}
-              </ul>
-            </div>
-          )}
-
-          <div className="grid grid-cols-2 gap-4">
-            {plant.flower && (
-              <div>
-                <h3 className="font-semibold text-[#3B1083]">Flower</h3>
-                <p className="text-gray-700">{plant.flower}</p>
+      {/* Growth Requirements */}
+      {plant.growthRequirements && (
+        <div className="space-y-4">
+          <h2 className="text-2xl font-semibold text-gray-900">
+            Growth Requirements
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {plant.growthRequirements.sunlight && (
+              <div className="space-y-1">
+                <dt className="text-sm font-medium text-gray-500">Sunlight</dt>
+                <dd className="text-base text-gray-900">
+                  {plant.growthRequirements.sunlight.join(", ")}
+                </dd>
               </div>
             )}
-            {plant.fruit && (
-              <div>
-                <h3 className="font-semibold text-[#3B1083]">Fruit</h3>
-                <p className="text-gray-700">{plant.fruit}</p>
+            {plant.growthRequirements.soil && (
+              <div className="space-y-1">
+                <dt className="text-sm font-medium text-gray-500">Soil</dt>
+                <dd className="text-base text-gray-900">
+                  {plant.growthRequirements.soil.join(", ")}
+                </dd>
               </div>
             )}
-            {plant.bark && (
-              <div>
-                <h3 className="font-semibold text-[#3B1083]">Bark</h3>
-                <p className="text-gray-700">{plant.bark}</p>
+            {plant.growthRequirements.water && (
+              <div className="space-y-1">
+                <dt className="text-sm font-medium text-gray-500">Water</dt>
+                <dd className="text-base text-gray-900">
+                  {plant.growthRequirements.water}
+                </dd>
               </div>
             )}
-            {plant.leaf && (
-              <div>
-                <h3 className="font-semibold text-[#3B1083]">Leaf</h3>
-                <p className="text-gray-700">{plant.leaf}</p>
+            {plant.growthRequirements.hardiness && (
+              <div className="space-y-1">
+                <dt className="text-sm font-medium text-gray-500">
+                  Hardiness Zones
+                </dt>
+                <dd className="text-base text-gray-900">
+                  {plant.growthRequirements.hardiness.min} -{" "}
+                  {plant.growthRequirements.hardiness.max}
+                </dd>
               </div>
             )}
-          </div>
-
-          <div>
-            <h3 className="font-semibold text-[#3B1083]">Native Status</h3>
-            <p className="text-gray-700">
-              {plant.isNative
-                ? "Native to Minnesota"
-                : "Not native to Minnesota"}
-            </p>
           </div>
         </div>
+      )}
+
+      {/* Images */}
+      {plant.images && plant.images.length > 0 && (
+        <div className="space-y-4">
+          <h2 className="text-2xl font-semibold text-gray-900">Images</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {plant.images.map((image, index) => (
+              <div key={index} className="relative aspect-square">
+                <img
+                  src={image.url}
+                  alt={
+                    image.caption || `${plant.commonName} image ${index + 1}`
+                  }
+                  className="object-cover rounded-lg w-full h-full"
+                />
+                {image.caption && (
+                  <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white p-2 rounded-b-lg">
+                    <p className="text-sm">{image.caption}</p>
+                    {image.credit && (
+                      <p className="text-xs italic">Credit: {image.credit}</p>
+                    )}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Native Status and Tags */}
+      <div className="flex flex-wrap gap-4 items-center">
+        <div className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
+          {plant.isNative ? "Native Species" : "Non-native Species"}
+        </div>
+        {plant.tags.map((tag) => (
+          <div
+            key={tag}
+            className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-gray-100 text-gray-800"
+          >
+            {tag}
+          </div>
+        ))}
       </div>
     </div>
   );
