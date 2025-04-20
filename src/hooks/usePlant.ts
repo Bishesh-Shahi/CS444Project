@@ -1,6 +1,11 @@
 import { useState, useEffect } from "react";
-import { Plant } from "../types/api";
-import { api } from "../lib/api";
+
+interface Plant {
+  id: string;
+  name: string;
+  description: string;
+  // Add other plant properties as needed
+}
 
 interface UsePlantResult {
   plant: Plant | null;
@@ -17,13 +22,15 @@ export function usePlant(id: string): UsePlantResult {
     async function fetchPlant() {
       try {
         setIsLoading(true);
-        setError(null);
-        const data = await api.plants.getById(id);
+        // Replace this with your actual API call
+        const response = await fetch(`/api/plants/${id}`);
+        if (!response.ok) {
+          throw new Error("Failed to fetch plant");
+        }
+        const data = await response.json();
         setPlant(data);
       } catch (err) {
-        setError(
-          err instanceof Error ? err : new Error("Failed to fetch plant")
-        );
+        setError(err instanceof Error ? err : new Error("An error occurred"));
       } finally {
         setIsLoading(false);
       }
