@@ -1,92 +1,104 @@
 import { useTrees } from "../hooks/useTrees";
 import { Spinner } from "../components/ui/Spinner";
 import THEME from "../utils/theme-config";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { Button } from "@/components/ui/Button";
+import { IoArrowBack } from "react-icons/io5";
 
 const GOOGLE_MAPS_API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY || "";
 
 export const LocationPage = () => {
   const { trees, loading, error } = useTrees();
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const selectedTreeId = searchParams.get("treeId");
 
   if (loading) return <Spinner />;
   if (error) return <div className="text-red-500">Error: {error}</div>;
 
+  // If no tree is selected, redirect to tree selection
+  if (!selectedTreeId) {
+    navigate("/");
+    return null;
+  }
+
+  const selectedTree = trees.find((tree) => tree.EntityId === selectedTreeId);
+
+  // If selected tree is not found, redirect to tree selection
+  if (!selectedTree) {
+    navigate("/");
+    return null;
+  }
+
   return (
     <div className={`px-4 py-8 ${THEME.spacing.container}`}>
+      <Button
+        variant="ghost"
+        className="mb-6 flex items-center gap-2"
+        onClick={() => navigate("/")}
+      >
+        <IoArrowBack className="w-5 h-5" />
+        Back to Trees
+      </Button>
+
       <h1
         className={`${THEME.typography.title} mb-8`}
         style={{ color: THEME.colors.primary }}
       >
-        Tree Locations
+        {selectedTree.DisplayName} Location
       </h1>
-      {trees.length === 0 ? (
-        <div className="bg-white p-6 rounded-lg shadow text-center">
-          <p className={THEME.colors.text.muted}>
-            No trees found. Please check the data source.
-          </p>
-        </div>
-      ) : (
-        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-          {trees.map((tree) => (
-            <div
-              key={tree.EntityId}
-              className="bg-white rounded-lg shadow-md overflow-hidden"
-            >
-              <div className="p-4">
-                <h3
-                  className="text-lg font-semibold mb-4"
-                  style={{ color: THEME.colors.primary }}
+
+      <div className="max-w-3xl mx-auto">
+        <div className="bg-white rounded-lg shadow-md overflow-hidden">
+          <div className="p-6">
+            {selectedTree.geoLocation && selectedTree.geoLocation.length > 0 ? (
+              <>
+                <div
+                  className={`flex items-center ${THEME.colors.text.muted} mb-6 text-lg`}
                 >
-                  {tree.DisplayName}
-                </h3>
-                {tree.geoLocation && tree.geoLocation.length > 0 ? (
-                  <>
-                    <div
-                      className={`flex items-center ${THEME.colors.text.muted} mb-4`}
-                    >
-                      <svg
-                        className="w-5 h-5 mr-2"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-                        />
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-                        />
-                      </svg>
-                      <span>
-                        {tree.geoLocation[0].Lat}°N, {tree.geoLocation[0].Lng}°W
-                      </span>
-                    </div>
-                    <div className="aspect-w-16 aspect-h-9 h-48">
-                      <iframe
-                        title={`${tree.DisplayName} Location`}
-                        width="100%"
-                        height="100%"
-                        style={{ border: 0 }}
-                        src={`https://www.google.com/maps/embed/v1/place?key=${GOOGLE_MAPS_API_KEY}&q=${tree.geoLocation[0].Lat},${tree.geoLocation[0].Lng}&zoom=18`}
-                        allowFullScreen
-                      ></iframe>
-                    </div>
-                  </>
-                ) : (
-                  <p className="text-gray-500 italic">
-                    Location information not available
-                  </p>
-                )}
-              </div>
-            </div>
-          ))}
+                  <svg
+                    className="w-6 h-6 mr-3"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                    />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                    />
+                  </svg>
+                  <span>
+                    {selectedTree.geoLocation[0].Lat}°N,{" "}
+                    {selectedTree.geoLocation[0].Lng}°W
+                  </span>
+                </div>
+                <div className="aspect-w-16 aspect-h-9 h-[500px]">
+                  <iframe
+                    title={`${selectedTree.DisplayName} Location`}
+                    width="100%"
+                    height="100%"
+                    style={{ border: 0 }}
+                    src={`https://www.google.com/maps/embed/v1/place?key=${GOOGLE_MAPS_API_KEY}&q=${selectedTree.geoLocation[0].Lat},${selectedTree.geoLocation[0].Lng}&zoom=18`}
+                    allowFullScreen
+                  ></iframe>
+                </div>
+              </>
+            ) : (
+              <p className="text-gray-500 italic text-center py-8">
+                Location information not available for this tree
+              </p>
+            )}
+          </div>
         </div>
-      )}
+      </div>
     </div>
   );
 };

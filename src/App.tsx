@@ -9,6 +9,7 @@ import { Navigation } from "./components/ui/Navigation";
 import { AboutPage } from "./pages/AboutPage";
 import { LocationPage } from "./pages/LocationPage";
 import { ImagesPage } from "./pages/ImagesPage";
+import { TreeSelectionPage } from "./pages/TreeSelectionPage";
 import { PlantDetail } from "./components/plants/PlantDetail";
 import { Spinner } from "./components/ui/Spinner";
 import { usePlant } from "./hooks/usePlant";
@@ -61,7 +62,8 @@ function App() {
         <Navigation />
         <main className="container mx-auto py-8 px-4">
           <Routes>
-            <Route path="/" element={<AboutPage />} />
+            <Route path="/" element={<TreeSelectionPage />} />
+            <Route path="/about" element={<AboutPage />} />
             <Route path="/location" element={<LocationPage />} />
             <Route path="/images" element={<ImagesPage />} />
             <Route path="/plants/:id" element={<PlantDetailPage />} />

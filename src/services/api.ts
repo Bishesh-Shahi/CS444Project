@@ -27,7 +27,7 @@ export const getTreeImages = async (treeId: string): Promise<TreeImage[]> => {
   }
 
   try {
-    const response = await fetch(`${API_BASE_URL}/api/trees/${treeId}/images`);
+    const response = await fetch(`${API_BASE_URL}/api/trees/${treeId}`);
 
     if (!response.ok) {
       throw new Error(
@@ -37,10 +37,21 @@ export const getTreeImages = async (treeId: string): Promise<TreeImage[]> => {
 
     const data = await response.json();
 
-    return data.map((image: any) => ({
-      url: `${API_BASE_URL}/Resources/${image.fileName}`,
-      name: image.displayName || "Tree Image",
-    }));
+    // If the tree has a default image, return it as the only image
+    if (data.DefaultImagePath) {
+      return [
+        {
+          url: data.DefaultImagePath.startsWith("http")
+            ? data.DefaultImagePath
+            : `${API_BASE_URL}/Resources/${data.DefaultImagePath.split(
+                "/"
+              ).pop()}`,
+          name: "Default Tree Image",
+        },
+      ];
+    }
+
+    return [];
   } catch (error) {
     console.error("Error fetching tree images:", error);
     return [];
