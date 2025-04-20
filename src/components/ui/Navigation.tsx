@@ -1,14 +1,33 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useSearchParams } from "react-router-dom";
 import { FaTree } from "react-icons/fa";
 import { MdLocationOn } from "react-icons/md";
 import { BiInfoCircle } from "react-icons/bi";
 import { IoImagesOutline } from "react-icons/io5";
+import { useState } from "react";
 
 export const Navigation = () => {
   const location = useLocation();
+  const [searchParams] = useSearchParams();
+  const selectedTreeId = searchParams.get("treeId");
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const isActive = (path: string) => {
     return location.pathname === path;
+  };
+
+  const getTreeLink = (path: string) => {
+    return selectedTreeId ? `${path}?treeId=${selectedTreeId}` : path;
+  };
+
+  const navigationItems = [
+    { path: "/", icon: FaTree, label: "Trees" },
+    { path: "/about", icon: BiInfoCircle, label: "About" },
+    { path: "/location", icon: MdLocationOn, label: "Location" },
+    { path: "/images", icon: IoImagesOutline, label: "Images" },
+  ];
+
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
   };
 
   return (
@@ -16,66 +35,46 @@ export const Navigation = () => {
       <div className="header__container">
         {/* Logo Section */}
         <div className="header__logo-wrapper">
-          <Link to="/" className="header__logo">
+          <Link
+            to="/"
+            className="header__logo"
+            onClick={() => setIsMobileMenuOpen(false)}
+          >
             <FaTree className="header__logo-icon" aria-hidden="true" />
             <span className="header__logo-text">Arboretum</span>
           </Link>
         </div>
 
-        {/* Main Navigation */}
+        {/* Desktop Navigation */}
         <nav
           className="header__nav"
           role="navigation"
           aria-label="Main navigation"
         >
           <ul className="header__nav-list">
-            <li className="header__nav-item">
-              <Link
-                to="/"
-                className={`header__link ${
-                  isActive("/") ? "header__link--active" : ""
-                }`}
-              >
-                <BiInfoCircle
-                  className="header__link-icon"
-                  aria-hidden="true"
-                />
-                <span>About</span>
-              </Link>
-            </li>
-            <li className="header__nav-item">
-              <Link
-                to="/location"
-                className={`header__link ${
-                  isActive("/location") ? "header__link--active" : ""
-                }`}
-              >
-                <MdLocationOn
-                  className="header__link-icon"
-                  aria-hidden="true"
-                />
-                <span>Location</span>
-              </Link>
-            </li>
-            <li className="header__nav-item">
-              <Link
-                to="/images"
-                className={`header__link ${
-                  isActive("/images") ? "header__link--active" : ""
-                }`}
-              >
-                <IoImagesOutline
-                  className="header__link-icon"
-                  aria-hidden="true"
-                />
-                <span>Images</span>
-              </Link>
-            </li>
+            {navigationItems.map((item) => (
+              <li key={item.path} className="header__nav-item">
+                <Link
+                  to={item.path === "/" ? "/" : getTreeLink(item.path)}
+                  className={`header__link ${
+                    isActive(item.path) ? "header__link--active" : ""
+                  }`}
+                >
+                  <item.icon className="header__link-icon" aria-hidden="true" />
+                  <span>{item.label}</span>
+                </Link>
+              </li>
+            ))}
           </ul>
         </nav>
 
         {/* Mobile Menu Button */}
-        <button className="header__menu-button" aria-label="Toggle menu">
+        <button
+          className="header__menu-button"
+          aria-label="Toggle menu"
+          onClick={toggleMobileMenu}
+          aria-expanded={isMobileMenuOpen ? "true" : "false"}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"
@@ -93,6 +92,30 @@ export const Navigation = () => {
           </svg>
         </button>
       </div>
+
+      {/* Mobile Navigation Menu */}
+      <nav
+        className={`header__mobile-nav ${isMobileMenuOpen ? "open" : ""}`}
+        role="navigation"
+        aria-label="Mobile navigation"
+      >
+        <ul className="header__mobile-nav-list">
+          {navigationItems.map((item) => (
+            <li key={item.path}>
+              <Link
+                to={item.path === "/" ? "/" : getTreeLink(item.path)}
+                className={`header__mobile-link ${
+                  isActive(item.path) ? "header__mobile-link--active" : ""
+                }`}
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                <item.icon className="header__link-icon" aria-hidden="true" />
+                <span>{item.label}</span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </nav>
     </header>
   );
 };
