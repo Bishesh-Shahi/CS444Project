@@ -4,6 +4,7 @@ import THEME from "../utils/theme-config";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/Button";
 import { IoArrowBack } from "react-icons/io5";
+import { FaApple, FaGoogle } from "react-icons/fa";
 
 const GOOGLE_MAPS_API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY || "";
 
@@ -29,6 +30,20 @@ export const LocationPage = () => {
     navigate("/");
     return null;
   }
+
+  const openInGoogleMaps = () => {
+    const lat = selectedTree.geoLocation[0].Lat;
+    const lng = selectedTree.geoLocation[0].Lng;
+    const url = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`;
+    window.open(url, "_blank");
+  };
+
+  const openInAppleMaps = () => {
+    const lat = selectedTree.geoLocation[0].Lat;
+    const lng = selectedTree.geoLocation[0].Lng;
+    const url = `http://maps.apple.com/?daddr=${lat},${lng}`;
+    window.open(url, "_blank");
+  };
 
   return (
     <div className={`px-4 py-8 ${THEME.spacing.container}`}>
@@ -80,6 +95,27 @@ export const LocationPage = () => {
                     {selectedTree.geoLocation[0].Lng}°W
                   </span>
                 </div>
+
+                {/* Map Direction Buttons */}
+                <div className="flex gap-4 mb-6">
+                  <Button
+                    variant="map"
+                    className="flex-1 flex items-center justify-center gap-2"
+                    onClick={openInGoogleMaps}
+                  >
+                    <FaGoogle className="w-5 h-5" />
+                    Open in Google Maps
+                  </Button>
+                  <Button
+                    variant="map"
+                    className="flex-1 flex items-center justify-center gap-2"
+                    onClick={openInAppleMaps}
+                  >
+                    <FaApple className="w-5 h-5" />
+                    Open in Apple Maps
+                  </Button>
+                </div>
+
                 <div className="aspect-w-16 aspect-h-9 h-[500px]">
                   <iframe
                     title={`${selectedTree.DisplayName} Location`}

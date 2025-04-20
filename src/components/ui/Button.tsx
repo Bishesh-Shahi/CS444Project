@@ -2,7 +2,7 @@ import { ButtonHTMLAttributes, forwardRef } from "react";
 import { cn } from "@/lib/utils";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: "default" | "ghost" | "outline";
+  variant?: "default" | "ghost" | "outline" | "map";
   size?: "default" | "sm" | "lg";
 }
 
@@ -23,6 +23,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
             "hover:bg-accent hover:text-accent-foreground": variant === "ghost",
             "border border-input hover:bg-accent hover:text-accent-foreground":
               variant === "outline",
+            "bg-blue-500 text-white hover:bg-blue-600": variant === "map",
           },
 
           // Sizes
