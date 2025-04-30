@@ -40,7 +40,11 @@ export const Navigation = () => {
             className="header__logo"
             onClick={() => setIsMobileMenuOpen(false)}
           >
-            <FaTree className="header__logo-icon" aria-hidden="true" />
+            <FaTree
+              className="header__logo-icon"
+              aria-hidden="true"
+              fill="white"
+            />
             <span className="header__logo-text">Arboretum</span>
           </Link>
         </div>
@@ -81,7 +85,7 @@ export const Navigation = () => {
             height="24"
             viewBox="0 0 24 24"
             fill="none"
-            stroke="currentColor"
+            stroke="white"
             strokeWidth="2"
             strokeLinecap="round"
             strokeLinejoin="round"
