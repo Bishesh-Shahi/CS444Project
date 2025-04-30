@@ -5,6 +5,7 @@ import { useNavigate, useSearchParams, Link } from "react-router-dom";
 import THEME from "../utils/theme-config";
 import { IoArrowBack } from "react-icons/io5";
 import { Button } from "@/components/ui/Button";
+import { TextToSpeechButton } from "@/components/ui/TextToSpeechButton";
 
 // Sample tree data for UI development - would be replaced by API data in production
 const SAMPLE_TREE_DATA = {
@@ -148,6 +149,10 @@ export const AboutPage = () => {
               style={{ color: THEME.colors.primary }}
             >
               {selectedTree.DisplayName}
+              <TextToSpeechButton
+                text={`${selectedTree.DisplayName}. ${treeData.detailedInfo.description}`}
+                className="ml-2 inline-block"
+              />
             </h2>
 
             {/* Main Content */}
@@ -274,9 +279,13 @@ export const AboutPage = () => {
 
                 {/* Description section */}
                 <DetailSection title="Description">
-                  <p className={`${THEME.colors.text.body} leading-relaxed`}>
-                    {treeData.detailedInfo.description}
-                  </p>
+                  <div className="flex items-start gap-2">
+                    <p>{treeData.detailedInfo.description}</p>
+                    <TextToSpeechButton
+                      text={treeData.detailedInfo.description}
+                      className="flex-shrink-0"
+                    />
+                  </div>
                 </DetailSection>
 
                 {/* Characteristics section */}
